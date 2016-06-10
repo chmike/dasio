@@ -76,13 +76,13 @@ struct ErrorCode
         value_ = category ? value : 0;
     }
     
-    this(T)(T.Value value) @safe pure nothrow
+    this(T : ErrorCategory)(T.Value value) @safe pure nothrow
     {
         category_ = T.category;
         value_ = cast(int)value;
     }    
     
-    ErrorCode opAssign(T)(T.Value value) @safe pure nothrow
+    ErrorCode opAssign(T : ErrorCategory)(T.Value value) @safe pure nothrow
     {
         category_ = T.category;
         value_ = cast(int)value;
@@ -103,7 +103,7 @@ struct ErrorCode
     
     bool opEquals(ErrorCode err) @safe pure nothrow const { return err.value == value_ && err.category is category_; }
 
-    bool opEquals(T)(T.Value value) @safe pure nothrow const { return value == value_ && T.category is category_; }
+    bool opEquals(T : ErrorCategory)(T.Value value) @safe pure nothrow const { return value == value_ && T.category is category_; }
     
 private:    
     Rebindable!(immutable ErrorCategory) category_ = null;
@@ -122,7 +122,7 @@ class ErrorCodeException : Exception
         err_ = err;
     }
     @safe pure nothrow
-    this(T)(T.Value value, string s = null, string fn = __FILE__, size_t ln = __LINE__)
+    this(T : ErrorCategory)(T.Value value, string s = null, string fn = __FILE__, size_t ln = __LINE__)
     {
         this(ErrorCode(value), s, fn, ln);
     }
